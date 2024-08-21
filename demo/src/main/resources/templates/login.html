@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webスクレイパー</title>
+    <link rel="stylesheet" th:href="@{/css/scraping.css}" href="../static/css/scraping.css">
+</head>
+<body>
+    <div>
+        <h3>Webスクレイパー&nbsp;ログイン</h3>
+        <form th:action="@{/login}" method="post">
+            <div class="error" th:if="${session.loginError}" th:text="${session.loginError}"></div>
+            メールアドレス:<input type="email" name="username"><br>
+            パスワード：<input type="password" name="password"><br>
+            <input type="submit" value="ログイン">
+        </form>
+        または<a th:href="@{/toRegister}">新規登録</a>
+    </div>
+</body>
+</html>

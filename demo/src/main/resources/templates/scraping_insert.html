@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webスクレイパー</title>
+    <link rel="stylesheet" th:href="@{/css/scraping.css}" href="../static/css/scraping.css">
+</head>
+<body>
+    <div>
+        <h3>URLを入力してください</h3>
+        <form id="scrapeForm" action="http://localhost:3000/scrape" method="post">
+            <input type="text" name="inputUrl" required>
+            <!-- スクレイピング開始 -->
+            <input type="submit" value="Scrape" id="Scrape">
+        </form>
+        <form id="submitForm" th:action="@{/insert}" method="post">
+            <!-- jsより受け取ったデータ -->
+            <input type="hidden" id="scrapedItemName" name="itemName">
+            <input type="hidden" id="scrapedItemPrice" name="itemPrice">
+            <input type="hidden" id="scrapedUrl" name="url">
+            <!-- nameがjava用、idがjs用 -->
+            <!-- コントローラクラスに取得したデータを送信 -->
+            <input type="submit" value="Submit" style="display: none;">
+        </form>
+        <h3 th:text="${message}">解析失敗</h3><br>
+        <table>
+            <tr>
+                <th>商品名</th>
+                <th>登録価格</th>
+                <th>最新価格</th>
+                <th>URL</th>
+                <th>削除</th>
+            </tr>
+            <tr th:each="item: ${itemList}">
+                <td th:text="${item.itemName}">商品名</td>
+                <td th:text="${item.priceOriginal}">登録価格</td>
+                <td th:if="${item.priceLatest == null}" th:text="'データなし'">最新価格</td>
+                <td th:unless="${item.priceLatest == null}" th:text="${item.priceLatest}">最新価格</td>
+                <td>
+                    <a th:href="${item.url}" th:text="${item.url}" target="_blank">URL</a>
+                </td>
+                <td>
+                    <form th:action="@{/delete}" method="post">
+                        <input type="hidden" name="id" th:value="${item.id}">
+                        <input type="submit" value="削除">
+                    </form>
+                </td>
+            </tr>
+        </table>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="ログアウト">
+        </form>
+    </div>
+    <script src="/js/scraping.js"></script>
+</body>
+</html>

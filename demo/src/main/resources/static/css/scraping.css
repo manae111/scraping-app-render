@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+body {
+    text-align: center;
+    margin-top: 50px;
+}
+
+table {
+    margin: 20px auto;
+}
+  
+table td {
+    max-width: 400px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+table tr:nth-child(odd) {
+    background-color: #eaeaea; /* 薄いグレー */
+}
+
+table tr:nth-child(even) {
+    background-color: #ffffff; /* 白 */
+}
+
+.error {
+    color: red;
+    font-weight: bold;
+    font-size: 15px;
+}

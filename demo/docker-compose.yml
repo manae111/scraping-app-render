@@ -1,0 +1,47 @@
+services:
+  db:
+    container_name: scraping-db
+    image: postgres
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: scraping
+    ports:
+      - "5432:5432"
+
+  web:
+    container_name: scraping-web
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: scraping
+      DB_USER: postgres
+      DB_PASS: postgres
+      TZ: Asia/Tokyo
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  server:
+    container_name: scraping-server
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - web
+      - db
+  
+  mail:
+    container_name: scraping-mailpit
+    image: axllent/mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
