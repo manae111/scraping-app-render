@@ -1,0 +1,53 @@
+databases:
+  - name: scraping-db # Render PG14
+    databaseName: scraping
+    user: postgres
+    password: postgres
+    postgresMajorVersion: 16
+
+services:
+  - type: web
+    name: scraping-web
+    env: docker
+    dockerfilePath: ./web/Dockerfile
+    envVars:
+      - key: DB_HOST
+        fromService:
+          type: database
+          name: scraping-db
+          envVarKey: RENDER_SERVICE_NAME
+      - key: DB_PORT
+        value: "5432"
+      - key: DB_NAME
+        value: scraping
+      - key: DB_USER
+        value: postgres
+      - key: DB_PASS
+        value: postgres
+      - key: TZ
+        value: Asia/Tokyo
+    ports:
+      - "8080:8080"
+    depends_on:
+      - scraping-db
+
+  - type: web
+    name: scraping-server
+    env: docker
+    dockerfilePath: ./server/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - scraping-web
+      - scraping-db
+
+  - type: mail
+    name: scraping-mailpit
+    image: axllent/mailpit
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+
+volumes:
+  redis: # Render Redis volume (必要に応じて)
+  postgres: # Render Postgres volume (必要に応じて)
