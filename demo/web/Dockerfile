@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y dos2unix
 WORKDIR /app
 
 # Gradleのキャッシュを利用するために、Gradleのラッパーと依存関係をコピー
-COPY ../gradlew .
+COPY demo/gradlew .
 COPY ../gradle gradle
 COPY ../build.gradle .
 COPY ../settings.gradle .
