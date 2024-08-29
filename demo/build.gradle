@@ -40,3 +40,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootWar {
+    mainClassName = 'com.example.demo.DemoApplication'
+}
