@@ -1,53 +1,32 @@
 databases:
-  - name: scraping-db # Render PG14
-    databaseName: scraping
-    user: postgres
-    password: postgres
-    postgresMajorVersion: 16
+  - name: scraping-db
+    plan: free
+    region: singapore
+    databaseName: postgresql_hellophp_mwe8
+    user: postgresql_hellophp_mwe8_user
 
 services:
   - type: web
     name: scraping-web
-    env: docker
+    runtime: docker
+    plan: free
+    region: singapore
     dockerfilePath: ./web/Dockerfile
     envVars:
-      - key: DB_HOST
-        fromService:
-          type: database
-          name: scraping-db
-          envVarKey: RENDER_SERVICE_NAME
-      - key: DB_PORT
-        value: "5432"
-      - key: DB_NAME
-        value: scraping
-      - key: DB_USER
-        value: postgres
-      - key: DB_PASS
-        value: postgres
       - key: TZ
         value: Asia/Tokyo
-    ports:
-      - "8080:8080"
-    depends_on:
-      - scraping-db
 
   - type: web
     name: scraping-server
-    env: docker
+    runtime: docker
+    plan: free
+    region: singapore
     dockerfilePath: ./server/Dockerfile
-    ports:
-      - "3000:3000"
-    depends_on:
-      - scraping-web
-      - scraping-db
 
-  - type: mail
+  - type: web
     name: scraping-mailpit
-    image: axllent/mailpit
-    ports:
-      - "8025:8025"
-      - "1025:1025"
-
-volumes:
-  redis: # Render Redis volume (必要に応じて)
-  postgres: # Render Postgres volume (必要に応じて)
+    runtime: image
+    plan: free
+    region: singapore
+    image:
+      url: docker.io/axllent/mailpit:latest
