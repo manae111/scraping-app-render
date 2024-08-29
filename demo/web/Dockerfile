@@ -16,6 +16,9 @@ COPY demo/settings.gradle .
 # gradlew ファイルの改行コードを LF に変換
 RUN dos2unix gradlew
 
+# 権限を付与
+RUN chmod +x ./gradlew
+
 # 依存関係を解決
 RUN ./gradlew dependencies
 
