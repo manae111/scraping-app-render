@@ -1,5 +1,5 @@
 FROM gradle:7.6.2-jdk17 AS build
-COPY --chown=gradle:gradle . /home/gradle/project
+COPY --chown=gradle:gradle ./demo /home/gradle/project
 WORKDIR /home/gradle/project
 RUN gradle clean build -x test
 
