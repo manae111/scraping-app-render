@@ -9,9 +9,9 @@ WORKDIR /app
 
 # Gradleのキャッシュを利用するために、Gradleのラッパーと依存関係をコピー
 COPY demo/gradlew .
-COPY ../gradle gradle
-COPY ../build.gradle .
-COPY ../settings.gradle .
+COPY demo/gradle gradle
+COPY demo/build.gradle .
+COPY demo/settings.gradle .
 
 # gradlew ファイルの改行コードを LF に変換
 RUN dos2unix gradlew
